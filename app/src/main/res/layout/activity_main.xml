@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+    <TextView
+        android:id="@+id/field_tv"
+        android:layout_width="350dp"
+        android:layout_height="100dp"
+        android:background="@drawable/border"
+        android:gravity='center'
+        android:hint="Enter Number"
+        android:text=""
+        android:textFontWeight="100"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.508"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.07" />
+
+    <Button
+        android:id="@+id/history_bt"
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        app:layout_constraintVertical_bias="0.05"
+        android:gravity="center"
+        android:text="History"
+        app:layout_constraintBottom_toBottomOf="@+id/grid"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/field_tv"
+         />
+
+    <GridView
+        android:id="@+id/grid"
+        app:layout_constraintTop_toBottomOf="@id/history_bt"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_width="350dp"
+        android:layout_height="400dp"
+        android:numColumns="4"
+        android:horizontalSpacing="5dp"
+        android:verticalSpacing="5dp"
+        android:columnWidth="10dp"
+        android:listSelector="#0f0"
+        android:padding="1dp"
+        android:gravity="center"
+        />
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
