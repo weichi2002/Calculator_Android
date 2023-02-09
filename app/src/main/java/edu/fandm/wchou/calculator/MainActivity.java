@@ -6,16 +6,22 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     GridView gv;
-    String[] number = new String[]{
+    String[] keypad = new String[]{
             "1", "2", "3", "+",
             "4", "5", "6", "-",
             "7", "8", "9", "*",
             "0", ".", ":)", "/",
             "(", ")", "DEL", "^",
     };
+    List<String> list = new ArrayList<String>(Arrays.asList(keypad));
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +29,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         gv = (GridView)findViewById(R.id.grid);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, number);
-        gv.setAdapter(adapter);
+        gv.setAdapter(new ArrayAdapter<String>(this, R.layout.keypad, list));
 
     }
 }
