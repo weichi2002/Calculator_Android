@@ -2,10 +2,8 @@
     android:id="@android:id/text1"
     android:layout_width="match_parent"
     android:layout_height="53dp"
-    android:background="@color/cardview_shadow_start_color"
+    android:background="@drawable/border"
     android:gravity="center"
     android:minHeight="?android:attr/listPreferredItemHeight"
-    android:paddingLeft="6dip"
     android:textAppearance="?android:attr/textAppearanceMedium"
-
     />

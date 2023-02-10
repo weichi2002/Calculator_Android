@@ -45,7 +45,6 @@
         android:columnWidth="10dp"
         android:gravity="center"
         android:horizontalSpacing="5dp"
-        android:listSelector="#0f0"
         android:numColumns="4"
         android:padding="1dp"
         android:verticalSpacing="5dp"
