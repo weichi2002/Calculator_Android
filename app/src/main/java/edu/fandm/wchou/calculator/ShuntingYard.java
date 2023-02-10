@@ -1,85 +1,89 @@
 package edu.fandm.wchou.calculator;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.NoSuchElementException;
 
 public class ShuntingYard {
 
-    private static final Map<Character, Integer> PRECEDENCE = new HashMap<>();
-
+    private static Map<Character, Integer> PRECEDENCE = new HashMap<>();
     static {
         PRECEDENCE.put('+', 1);
         PRECEDENCE.put('-', 1);
         PRECEDENCE.put('*', 2);
         PRECEDENCE.put('/', 2);
-        PRECEDENCE.put('^', 3);
+        PRECEDENCE.put('^',3);
     }
 
-    public static List<String> convertToPostFix(String expression) {
-        Stack<Character> operators = new Stack<>();
-        List<String> output = new ArrayList<>();
+    private static boolean isDigit(char c) {
+        return c >= '0' && c <= '9';
+    }
 
-        StringBuilder number = new StringBuilder();
+    private static boolean isOperator(char c) {
+        return PRECEDENCE.containsKey(c);
+    }
+
+    public static double evaluate(String expression) {
+        Deque<Double> values = new ArrayDeque<>();
+        Deque<Character> operators = new ArrayDeque<>();
+
         for (int i = 0; i < expression.length(); i++) {
             char c = expression.charAt(i);
-
-            if (c == ' ') {
-                continue;
-            }
-
-            if (Character.isDigit(c) || c == '.') {
-                number.append(c);
-                if (i == expression.length() - 1 || !(Character.isDigit(expression.charAt(i + 1)) || expression.charAt(i + 1) == '.')) {
-                    output.add(number.toString());
-                    number = new StringBuilder();
+            if (isDigit(c)) {
+                StringBuilder sb = new StringBuilder();
+                while (i < expression.length() && (isDigit(expression.charAt(i)) || expression.charAt(i) == '.')) {
+                    sb.append(expression.charAt(i++));
                 }
-            } else {
-                while (!operators.empty() && PRECEDENCE.get(operators.peek()) >= PRECEDENCE.get(c)) {
-                    output.add(String.valueOf(operators.pop()));
+                i--;
+                try {
+                    values.push(Double.parseDouble(sb.toString()));
+                } catch (NumberFormatException e) {
+                    System.err.println("Error: invalid decimal point");
+                    return Double.NaN;
+                }
+            } else if (isOperator(c)) {
+                while (!operators.isEmpty() && PRECEDENCE.get(operators.peek()) >= PRECEDENCE.get(c)) {
+                    try {
+                        values.push(applyOperator(operators.pop(), values.pop(), values.pop()));
+                    }catch(NoSuchElementException e){
+                        return Double.NaN;
+                    }
                 }
                 operators.push(c);
-            }
-        }
-
-        while (!operators.empty()) {
-            output.add(String.valueOf(operators.pop()));
-        }
-
-        return output;
-    }
-
-    public static double calculate(List<String> rpn) {
-        Stack<Double> stack = new Stack<>();
-
-        for (String token : rpn) {
-            if (token.matches("-?\\d+(\\.\\d+)?")) {
-                stack.push(Double.parseDouble(token));
-            } else {
-                double b = stack.pop();
-                double a = stack.pop();
-
-                switch (token) {
-                    case "^":
-                        stack.push(Math.pow(a,b));
-                        break;
-
-                    case "+":
-                        stack.push(a + b);
-                        break;
-                    case "-":
-                        stack.push(a - b);
-                        break;
-                    case "*":
-                        stack.push(a * b);
-                        break;
-                    case "/":
-                        stack.push(a / b);
-                        break;
-
+            } else if (c == '(') {
+                operators.push(c);
+            } else if (c == ')') {
+                while (operators.peek() != '(') {
+                    values.push(applyOperator(operators.pop(), values.pop(), values.pop()));
                 }
+                operators.pop();
             }
         }
 
-        return stack.pop();
+        while (!operators.isEmpty()) {
+            values.push(applyOperator(operators.pop(), values.pop(), values.pop()));
+        }
+
+        return values.pop();
     }
 
+    private static double applyOperator(char operator, double b, double a) {
+        switch (operator) {
+            case '^':
+                return Math.pow(a,b);
+            case '+':
+                return a + b;
+            case '-':
+                return a - b;
+            case '*':
+                return a * b;
+            case '/':
+                if(b==0) return Double.NaN;
+                return a / b;
+            default:
+                throw new IllegalArgumentException("Error: unknown operator " + operator);
+        }
+    }
 }

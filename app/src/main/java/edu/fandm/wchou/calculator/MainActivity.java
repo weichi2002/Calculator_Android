@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,6 +15,8 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.sql.Array;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,8 +33,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private String operation = "";
-    private String[] historyList;
-
+    protected ArrayList<String> historyList = new ArrayList<>();
     List<String> list = new ArrayList<String>(Arrays.asList(keypad));
 
 
@@ -49,22 +51,25 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 String selected = (String) (keyBoard.getItemAtPosition(position));
 
+                if(operation.contains("=")){
+                    int idx = operation.indexOf('=');
+                    operation = operation.substring(idx+1);
+                    if(operation == "NaN"){
+                        operation = "";
+                    }
+                }
                 if (selected == "DEL"){
                     if(operation.length()==0) return;
                     operation = operation.substring(0, operation.length()-1);
                 }
                 else if(selected == ":)"){
+                    Toast.makeText(MainActivity.this, "Have A Nice Day :)", Toast.LENGTH_LONG).show();
                     return;
                 }
-
-
                 else {
                     operation += selected;
                 }
-                //some logic here to start a new operation if the screen contains '='
                 field.setText(operation);
-
-
             }
         });
 
@@ -81,11 +86,16 @@ public class MainActivity extends AppCompatActivity {
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String ans = String.valueOf(calculate(convertToPostFix(operation)));
-
+                if(operation.contains("=")) return;
+                if(Double.isNaN(evaluate(operation))){
+                    Toast.makeText(MainActivity.this,
+                            "Come on Bro, Invalid Expression!!!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                String ans = String.format("%.4f", evaluate(operation));
                 operation += "=" + ans;
+                historyList.add(operation);
                 field.setText(operation);
-
             }
         });
 
@@ -94,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), History.class);
-                i.putExtra("History", historyList);
+                i.putStringArrayListExtra("History", historyList);
                 startActivity(i);
             }
         });
