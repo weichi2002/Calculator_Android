@@ -1,12 +1,11 @@
 package edu.fandm.wchou.calculator;
 
+import static edu.fandm.wchou.calculator.ShuntingYard.*;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.inputmethodservice.Keyboard;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyboardShortcutGroup;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -26,17 +25,16 @@ public class MainActivity extends AppCompatActivity {
             "1", "2", "3", "+",
             "4", "5", "6", "-",
             "7", "8", "9", "*",
-            "0", ".", "", "/",
+            "0", ".", ":)", "/",
             "(", ")", "DEL", "^",
     };
-    private String operations = "";
-    private ArrayList<String> historyList = new ArrayList<String>();
+
+    private String operation = "";
+    private String[] historyList;
 
     List<String> list = new ArrayList<String>(Arrays.asList(keypad));
 
-    protected void evaluate(){
 
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,12 +50,19 @@ public class MainActivity extends AppCompatActivity {
                 String selected = (String) (keyBoard.getItemAtPosition(position));
 
                 if (selected == "DEL"){
-                    operations = operations.substring(0, operations.length()-1);
+                    if(operation.length()==0) return;
+                    operation = operation.substring(0, operation.length()-1);
                 }
+                else if(selected == ":)"){
+                    return;
+                }
+
+
                 else {
-                    operations += selected;
+                    operation += selected;
                 }
-                field.setText(operations);
+                //some logic here to start a new operation if the screen contains '='
+                field.setText(operation);
 
 
             }
@@ -67,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
         clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                operations = "";
-                field.setText(operations);
+                operation = "";
+                field.setText(operation);
             }
         });
 
@@ -76,8 +81,10 @@ public class MainActivity extends AppCompatActivity {
         enter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                evaluate();
-                field.setText(operations);
+                String ans = String.valueOf(calculate(convertToPostFix(operation)));
+
+                operation += "=" + ans;
+                field.setText(operation);
 
             }
         });
@@ -87,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getApplicationContext(), History.class);
+                i.putExtra("History", historyList);
                 startActivity(i);
             }
         });
