@@ -49,10 +49,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        TextView field = findViewById(R.id.field_tv);
+
+        Intent i = getIntent();
+        String history = i.getStringExtra("History");
+        operation = history;
+        field.setText(operation);
 
         GridView  keyBoard = (GridView)findViewById(R.id.grid);
-
-        TextView field = findViewById(R.id.field_tv);
 
         keyBoard.setAdapter(new ArrayAdapter<String>(this, R.layout.keypad, list));
         keyBoard.setOnItemClickListener(new AdapterView.OnItemClickListener() {

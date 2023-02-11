@@ -5,8 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -25,6 +28,18 @@ public class History extends AppCompatActivity {
         ListView lv = findViewById(R.id.history_lv);
         lv.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, history));
 
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selected = (String) (lv.getItemAtPosition(position));
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                i.putExtra("History", selected);
+                startActivity(i);
+            }
+        });
+
+        Toast.makeText(History.this,
+                "Try Clicking on the History!!!", Toast.LENGTH_SHORT).show();
 
 
     }
