@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+//https://www.geeksforgeeks.org/java-program-to-implement-shunting-yard-algorithm/  and some other stackoverflow posts
 public class ShuntingYard {
 
     private static Map<Character, Integer> PRECEDENCE = new HashMap<>();

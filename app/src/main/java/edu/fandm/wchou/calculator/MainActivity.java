@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     protected ArrayList<String> historyList = new ArrayList<>();
     List<String> list = new ArrayList<String>(Arrays.asList(keypad));
 
+    //https://stackoverflow.com/questions/703396/how-to-nicely-format-floating-numbers-to-string-without-unnecessary-decimal-0s
     public static String fmt(double d)
     {
         if(d == (long) d)
