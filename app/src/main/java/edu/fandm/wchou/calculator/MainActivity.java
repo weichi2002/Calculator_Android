@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
     private String operation = "";
     protected ArrayList<String> historyList = new ArrayList<>();
     List<String> list = new ArrayList<String>(Arrays.asList(keypad));
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +63,12 @@ public class MainActivity extends AppCompatActivity {
                     operation = operation.substring(0, operation.length()-1);
                 }
                 else if(selected == ":)"){
-                    Toast.makeText(MainActivity.this, "Have A Nice Day :)", Toast.LENGTH_LONG).show();
+                    ImageView i = new ImageView(getApplicationContext());
+                    i.setImageResource(R.drawable.nyan);
+                    Toast t = new Toast(getApplicationContext());
+                    t.setDuration(Toast.LENGTH_SHORT);
+                    t.setView(i);
+                    t.show();
                     return;
                 }
                 else {
@@ -89,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                 if(operation.contains("=")) return;
                 if(Double.isNaN(evaluate(operation))){
                     Toast.makeText(MainActivity.this,
-                            "Come on Bro, Invalid Expression!!!", Toast.LENGTH_LONG).show();
+                            "Invalid Expression!!!", Toast.LENGTH_LONG).show();
                     return;
                 }
                 String ans = String.format("%.4f", evaluate(operation));

@@ -6,21 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".History">
 
-    <TextView
-        android:id="@+id/field_tv"
-        android:layout_width="350dp"
-        android:layout_height="100dp"
-        android:background="@drawable/border"
-        android:gravity='center'
-        android:hint="Enter Number"
-        android:text=""
-        android:textFontWeight="100"
-        android:textSize="25sp"
+    <ListView
+        android:id="@+id/history_lv"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:divider="#AD8DE6"
+        android:dividerHeight="1dp"
+        android:listSelector="#ACD8AC"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.508"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.07" />
+        app:layout_constraintVertical_bias="0.021" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

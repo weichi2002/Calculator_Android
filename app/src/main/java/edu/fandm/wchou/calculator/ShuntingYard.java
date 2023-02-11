@@ -63,7 +63,11 @@ public class ShuntingYard {
         }
 
         while (!operators.isEmpty()) {
-            values.push(applyOperator(operators.pop(), values.pop(), values.pop()));
+            try {
+                values.push(applyOperator(operators.pop(), values.pop(), values.pop()));
+            }catch(NoSuchElementException e){
+                return Double.NaN;
+            }
         }
 
         return values.pop();
