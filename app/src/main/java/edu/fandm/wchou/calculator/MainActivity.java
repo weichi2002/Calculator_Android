@@ -37,6 +37,14 @@ public class MainActivity extends AppCompatActivity {
     protected ArrayList<String> historyList = new ArrayList<>();
     List<String> list = new ArrayList<String>(Arrays.asList(keypad));
 
+    public static String fmt(double d)
+    {
+        if(d == (long) d)
+            return String.format("%d",(long)d);
+        else
+            return String.format("%s",d);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                             "Invalid Expression!!!", Toast.LENGTH_LONG).show();
                     return;
                 }
-                String ans = String.format("%.4f", evaluate(operation));
+                String ans = String.valueOf(fmt(evaluate(operation)));
                 operation += "=" + ans;
                 historyList.add(operation);
                 field.setText(operation);
