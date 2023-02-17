@@ -28,18 +28,6 @@ public class History extends AppCompatActivity {
         ListView lv = findViewById(R.id.history_lv);
         lv.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, history));
 
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String selected = (String) (lv.getItemAtPosition(position));
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                i.putExtra("History", selected);
-                startActivity(i);
-            }
-        });
-
-        Toast.makeText(History.this,
-                "Try Clicking on the History!!!", Toast.LENGTH_SHORT).show();
 
 
     }
